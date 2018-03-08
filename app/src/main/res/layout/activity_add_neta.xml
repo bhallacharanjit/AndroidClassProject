@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.aprosoftech.myclass.AddNeta">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_centerInParent="true">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_name"
+            android:hint="Name of the Politician"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_name"
+            android:layout_marginTop="10dp"
+            android:id="@+id/et_city"
+            android:hint="City"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_city"
+            android:id="@+id/et_party"
+            android:layout_marginTop="10dp"
+            android:hint="Party of the Politician"/>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_party"
+            android:background="#8c8c8c"
+            android:id="@+id/btn_save"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFF"
+            android:textAllCaps="false"
+            android:text="Save Politician"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
