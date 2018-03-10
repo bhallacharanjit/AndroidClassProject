@@ -57,6 +57,20 @@
             android:text="Save Locally"
             android:layout_below="@id/btn_save"/>
 
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete record"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFF"
+            android:id="@+id/btn_delete"
+            android:background="#FF0000"
+            android:layout_below="@id/btn_local_save"/>
+
+
+
+
     </RelativeLayout>
 
 </RelativeLayout>

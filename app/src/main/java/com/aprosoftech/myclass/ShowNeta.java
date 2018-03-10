@@ -55,6 +55,7 @@ public class ShowNeta extends AppCompatActivity implements AdapterView.OnItemCli
     //FOR CALLING GET SERVICE
     public void callGETService() {
         String url = "https://api.backendless.com/65C6BAD1-C8A1-91BF-FFDF-0803DE39EE00/0B0003D1-E1FB-A85B-FFC9-634D746D3100/data/MLAs?sortBy=Name%20desc";
+//        String url = "https://api.backendless.com/65C6BAD1-C8A1-91BF-FFDF-0803DE39EE00/0B0003D1-E1FB-A85B-FFC9-634D746D3100/data/MLAs?where=Name%3D'"+et_username.getText().toString+"'%20AND%20City%3D'"+et_password.getText().toString()+"'";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -67,8 +68,6 @@ public class ShowNeta extends AppCompatActivity implements AdapterView.OnItemCli
                     for (int i=0;i<jsonArray.length();i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         arrayList.add(jsonObject.getString("Name"));
-
-
                     }
 
 
