@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     EditText et_username, et_password;
     Button btn_login,btn_sign_up;
+    CheckBox cb_terms;
 
 
     @Override
@@ -25,6 +27,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         et_password = (EditText) findViewById(R.id.et_password);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_sign_up = (Button) findViewById(R.id.btn_sign_up);
+        cb_terms = (CheckBox) findViewById(R.id.cb_terms);
 
 
         Log.d("Main2Ativity","onCreate");
@@ -73,6 +76,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         if (btn.getId() == R.id.btn_login) {
             String username = et_username.getText().toString();
             String password = et_password.getText().toString();
+
+
+            if (cb_terms.isChecked()) {
+
+            } else {
+                Toast.makeText(Main2Activity.this,"Please agree to terms and conditions",Toast.LENGTH_LONG).show();
+                return;
+            }
+
 
 
             if (username.equalsIgnoreCase("b") && password.equalsIgnoreCase("1")) {

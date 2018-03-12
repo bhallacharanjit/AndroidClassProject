@@ -73,7 +73,7 @@ public class ShowNeta extends AppCompatActivity implements AdapterView.OnItemCli
 //                    ArrayAdapter arrayAdapter = new ArrayAdapter(ShowNeta.this,android.R.layout.simple_list_item_1,arrayList);
 //                    lv_Netas.setAdapter(arrayAdapter);
 //
-                    
+
 
                     NetaAdapter netaAdapter = new NetaAdapter(ShowNeta.this, jsonArray);
                     lv_Netas.setAdapter(netaAdapter);
