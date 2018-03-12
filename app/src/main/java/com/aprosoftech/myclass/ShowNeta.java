@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -71,8 +70,15 @@ public class ShowNeta extends AppCompatActivity implements AdapterView.OnItemCli
                     }
 
 
-                    ArrayAdapter arrayAdapter = new ArrayAdapter(ShowNeta.this,android.R.layout.simple_list_item_1,arrayList);
-                    lv_Netas.setAdapter(arrayAdapter);
+//                    ArrayAdapter arrayAdapter = new ArrayAdapter(ShowNeta.this,android.R.layout.simple_list_item_1,arrayList);
+//                    lv_Netas.setAdapter(arrayAdapter);
+//
+                    
+
+                    NetaAdapter netaAdapter = new NetaAdapter(ShowNeta.this, jsonArray);
+                    lv_Netas.setAdapter(netaAdapter);
+
+
                     lv_Netas.setOnItemClickListener(ShowNeta.this);
 
 

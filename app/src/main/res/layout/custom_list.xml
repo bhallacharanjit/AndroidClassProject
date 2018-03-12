@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:id="@+id/tv_name"
+        android:textStyle="bold|italic"
+        android:layout_toLeftOf="@id/iv_arrow"
+        android:text="Name of Neta"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="City"
+        android:textSize="12sp"
+        android:id="@+id/tv_city"
+        android:layout_toLeftOf="@id/iv_arrow"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/tv_name"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Party"
+        android:textSize="12sp"
+        android:id="@+id/tv_party"
+        android:layout_toLeftOf="@id/iv_arrow"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/tv_city"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/iv_arrow"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/next"/>
+
+
+</RelativeLayout>
