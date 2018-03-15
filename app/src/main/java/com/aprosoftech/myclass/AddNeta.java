@@ -1,6 +1,7 @@
 package com.aprosoftech.myclass;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,6 +35,11 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
 
 
         et_name = (EditText) findViewById(R.id.et_name);
+
+        et_name.setBackgroundColor(Color.parseColor("#ffffff"));
+        et_name.setBackgroundColor(Color.RED);
+
+
         et_city = (EditText) findViewById(R.id.et_city);
         et_party = (EditText) findViewById(R.id.et_party);
 

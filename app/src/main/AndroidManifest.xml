@@ -12,22 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme2">
         <activity android:name=".MainActivity" />
-        <activity android:name=".Main2Activity" >
+        <activity android:name=".Main2Activity">
+
+        </activity>
+        <activity android:name=".Main3Activity" />
+        <activity android:name=".TrashActivity" />
+        <activity android:name=".AddNeta"></activity>
+        <activity android:name=".ShowNeta"></activity>
+        <activity android:name=".ModifyNeta" />
+        <activity android:name=".GridViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".TrashActivity" />
-        <activity android:name=".AddNeta">
-
-        </activity>
-        <activity android:name=".ShowNeta" >
-
-        </activity>
-        <activity android:name=".ModifyNeta"></activity>
     </application>
 
 </manifest>
