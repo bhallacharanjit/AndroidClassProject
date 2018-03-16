@@ -2,6 +2,7 @@ package com.aprosoftech.myclass;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,31 @@ public class GridAdapter extends BaseAdapter {
 
         rl_inner_grid.setBackgroundColor(Color.parseColor(tempObj.get("color").toString()));
 
+        Log.e("CLASS APP",tempObj.get("name").toString());
+
+        textView.setTextColor(Color.WHITE);
 
         return myView;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
