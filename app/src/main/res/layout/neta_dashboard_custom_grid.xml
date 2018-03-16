@@ -3,22 +3,32 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_inner_grid"
+        android:layout_margin="5dp">
+
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:id="@+id/iv_icon"
-        android:src="@mipmap/message"/>
+        android:layout_margin="10dp"
+        android:src="@mipmap/add_neta"/>
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_icon"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:id="@+id/tv_title"
+        android:textStyle="bold|italic"
         android:gravity="center"
         android:text="Some Text Here"
         />
 
+    </RelativeLayout>
 
 
 
