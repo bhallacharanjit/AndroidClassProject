@@ -1,7 +1,11 @@
 package com.aprosoftech.myclass;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -15,6 +19,23 @@ public class GridViewActivity extends AppCompatActivity {
     Integer[] imagesArray= new Integer[]{R.mipmap.add_neta,R.mipmap.edit,R.mipmap.view,R.mipmap.more_apps};
     String [] colorsArray = new String[]{"#2196F3","#9E9E9E","#4CAF50","#9C27B0"};
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.my_action_bar_items,menu);
+        MenuItem item = menu.findItem(R.id.add);
+        item.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.add) {
+            Intent intent = new Intent(GridViewActivity.this,AddNeta.class);
+            startActivity(intent);
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +60,8 @@ public class GridViewActivity extends AppCompatActivity {
 
             arrayList.add(tempHashmap);
         }
+
+
 
 
         GridAdapter adapter = new GridAdapter(GridViewActivity.this,arrayList);

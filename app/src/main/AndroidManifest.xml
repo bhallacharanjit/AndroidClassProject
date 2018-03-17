@@ -19,14 +19,14 @@
         <activity android:name=".ShowNeta" />
         <activity android:name=".ModifyNeta" />
         <activity android:name=".GridViewActivity">
-
-        </activity>
-        <activity android:name=".WebViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".WebViewActivity">
+
         </activity>
     </application>
 
