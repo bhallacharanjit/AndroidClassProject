@@ -24,7 +24,14 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            WebViewActivity.this.finish();
+        }
+    }
 
     class WebViewClient extends android.webkit.WebViewClient {
         @Override
