@@ -1,9 +1,14 @@
 package com.aprosoftech.myclass;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -72,6 +77,7 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
 //        ArrayAdapter arrayAdapter = new ArrayAdapter(GridViewActivity.this,android.R.layout.simple_list_item_1,simpleArray);
 //        gv_dashboard.setAdapter(arrayAdapter);
 
+        checkForPermission();
 
         ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
 
@@ -98,6 +104,42 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
         GridAdapter adapter = new GridAdapter(GridViewActivity.this, arrayList);
         gv_dashboard.setAdapter(adapter);
         gv_dashboard.setOnItemClickListener(this);
+
+
+    }
+
+
+    public void checkForPermission() {
+        if (ContextCompat.
+                checkSelfPermission(GridViewActivity.this,
+                        Manifest.permission.CALL_PHONE)
+                == PackageManager.PERMISSION_GRANTED) {
+            //Permission already granted
+            Toast.makeText(GridViewActivity.this,"Permission Already Granted",Toast.LENGTH_LONG).show();
+
+        } else {
+            String[] permissions = new String[]{Manifest.permission.CALL_PHONE,Manifest.permission.READ_SMS};
+            ActivityCompat.requestPermissions
+                    (GridViewActivity.this,permissions,123);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+        if (requestCode == 123) {
+            Log.d("Length",""+permissions.length);
+            for (int i=0;i<permissions.length;i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("Permissions",permissions[i]+"is granted");
+                } else {
+                    Log.d("Permissions",permissions[i]+"is denied");
+                }
+            }
+        }
 
 
     }
