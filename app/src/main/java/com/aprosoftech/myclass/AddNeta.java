@@ -1,12 +1,15 @@
 package com.aprosoftech.myclass;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,8 +29,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class AddNeta extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,8 +42,9 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
     EditText et_name, et_party, et_city;
     Button btn_save;
     ImageButton ib_userImage;
-
+    Uri fileUri;
     ProgressDialog progressDialog;
+    static String IMAGE_DIRECTORY_NAME = "ImagesDir";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +128,35 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
 
 
         } else if (view.getId() == R.id.iv_userImage) {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, 1002);
+
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(AddNeta.this);
+            alertBuilder.setTitle("Confirmation");
+            alertBuilder.setMessage("Where would you like to pick images from?");
+            alertBuilder.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    fileUri = getOutputMediaFileUri(1);
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+
+                    // start the image capture Intent
+                    startActivityForResult(intent, 1001);
+
+                }
+            });
+            alertBuilder.setNeutralButton("Gallery", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 1002);
+                }
+            });
+            alertBuilder.setNegativeButton("Cancel",null);
+            alertBuilder.show();
+
+
         }
 
     }
@@ -145,6 +180,63 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
             } else {
                 Toast.makeText(this, "Not Selected Image", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == 1001) {
+            if (resultCode == RESULT_OK) {
+
+                // bimatp factory
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                // downsizing image as it throws OutOfMemory Exception for larger
+                // images
+                options.inSampleSize = 8;
+
+                final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+                        options);
+
+                ib_userImage.setImageBitmap(bitmap);
+                }
         }
+    }
+
+
+    /**
+     * Creating file uri to store image/video
+     */
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /**
+     * returning image / video
+     */
+    private static File getOutputMediaFile(int type) {
+
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                IMAGE_DIRECTORY_NAME);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
+                        + IMAGE_DIRECTORY_NAME + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == 1) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg");
+        } else {
+            return null;
+        }
+
+        return mediaFile;
     }
 }

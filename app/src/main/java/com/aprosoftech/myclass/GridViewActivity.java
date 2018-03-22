@@ -1,6 +1,8 @@
 package com.aprosoftech.myclass;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,13 +18,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.GridView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
-public class GridViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class GridViewActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
     GridView gv_dashboard;
@@ -48,6 +53,21 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
         if (item.getItemId() == R.id.add) {
             Intent intent = new Intent(GridViewActivity.this, AddNeta.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.view) {
+            Calendar calendar = Calendar.getInstance();
+            int mYear = calendar.get(Calendar.YEAR);
+            int mMonth = calendar.get(Calendar.MONTH);
+            int mDay  = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(GridViewActivity.this,GridViewActivity.this,mYear,mMonth,mDay);
+            datePickerDialog.show();
+        } else if (item.getItemId() == R.id.delete) {
+            Calendar calendar = Calendar.getInstance();
+            int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+            int mMinutes = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(GridViewActivity.this,GridViewActivity.this,mHour,mMinutes,false);
+            timePickerDialog.show();
         }
         return true;
     }
@@ -186,5 +206,29 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
                 Toast.makeText(GridViewActivity.this,"Neta Adding Cancelled",Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        Toast.makeText(this, i2+"-"+(i1+1)+"-"+i, Toast.LENGTH_SHORT).show();
+
+
+
+
+
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        String time = "";
+        String am_pm = "";
+        if (i<12) {
+            time = ""+i;
+            am_pm = "AM";
+        } else {
+            time = ""+(i-12);
+            am_pm = "PM";
+        }
+        Toast.makeText(this,time+":"+i1+" "+am_pm,Toast.LENGTH_LONG).show();
     }
 }
