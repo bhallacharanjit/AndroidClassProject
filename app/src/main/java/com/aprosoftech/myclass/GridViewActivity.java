@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -28,7 +27,10 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
 
     GridView gv_dashboard;
     String[] simpleArray = new String[]{"Add Neta", "Edit Neta", "View Neta", "More Apps"};
-    Integer[] imagesArray = new Integer[]{R.mipmap.add_neta, R.mipmap.edit, R.mipmap.view, R.mipmap.more_apps};
+    Integer[] imagesArray = new Integer[]{R.mipmap.add_neta,
+            R.mipmap.edit,
+            R.mipmap.view,
+            R.mipmap.more_apps};
     String[] colorsArray = new String[]{"#2196F3", "#9E9E9E", "#4CAF50", "#9C27B0"};
 
     @Override
@@ -146,15 +148,43 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("http://www.google.com"));
-            startActivity(intent);
-        } catch (Exception ae) {
-            Toast.makeText(GridViewActivity.this,"Some error occured",Toast.LENGTH_LONG).show();
+//        try {
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setData(Uri.parse("http://www.google.com"));
+//            startActivity(intent);
+//        } catch (Exception ae) {
+//            Toast.makeText(GridViewActivity.this,"Some error occured",Toast.LENGTH_LONG).show();
+//        }
+
+        switch (i) {
+            case 0:
+            {
+                Intent intent = new Intent(GridViewActivity.this,AddNeta.class);
+                startActivityForResult(intent,1002);
+            } break;
+            case 1:
+            {
+                Intent intent = new Intent(GridViewActivity.this,ShowNeta.class);
+                startActivityForResult(intent,1003);
+            }
         }
+
+
+
+
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1002) {
+            if (resultCode == RESULT_OK) {
 
+                Toast.makeText(GridViewActivity.this,"Neta Added with name: "+data.getExtras().getString("Name"),Toast.LENGTH_LONG).show();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(GridViewActivity.this,"Neta Adding Cancelled",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }
