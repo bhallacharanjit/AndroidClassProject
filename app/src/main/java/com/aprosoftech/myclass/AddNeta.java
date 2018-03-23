@@ -25,6 +25,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.files.BackendlessFile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +49,7 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
     Uri fileUri;
     ProgressDialog progressDialog;
     static String IMAGE_DIRECTORY_NAME = "ImagesDir";
+    Bitmap imageNeta = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,53 +83,36 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save) {
-            String name = et_name.getText().toString();
-            String party = et_party.getText().toString();
-            String city = et_city.getText().toString();
 
-
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("Name", name);
-                jsonObject.put("City", city);
-                jsonObject.put("Party", party);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (imageNeta == null) {
+                uploadData("");
+            } else {
+                String fileName = et_name.getText().toString() + "_"+et_city.getText().toString()
+                        +"_"+et_party.getText().toString();
+                Backendless.Files.Android.upload( imageNeta,
+                        Bitmap.CompressFormat.PNG,
+                        100,fileName,
+                        "myClassFiles",
+                        new AsyncCallback<BackendlessFile>()
+                {
+                    @Override
+                    public void handleResponse( final BackendlessFile backendlessFile)
+                    {
+                        uploadData(backendlessFile.getFileURL());
+                    }
+                    @Override
+                    public void handleFault( BackendlessFault backendlessFault )
+                    {
+                        Toast.makeText( AddNeta.this, backendlessFault.toString(), Toast.LENGTH_SHORT ).show();
+                    }
+                });
             }
 
-            String url = "https://api.backendless.com/65C6BAD1-C8A1-91BF-FFDF-0803DE39EE00/0B0003D1-E1FB-A85B-FFC9-634D746D3100/data/MLAs";
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Log.d("Response", response.toString());
-                    progressDialog.dismiss();
-                    Toast.makeText(AddNeta.this, "Data Saved", Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent();
-                    intent.putExtra("Name", et_name.getText().toString());
-                    setResult(RESULT_OK, intent);
-                    AddNeta.this.finish();
 
 
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("Error", "Err" + error.getLocalizedMessage());
-                    progressDialog.dismiss();
-                    Toast.makeText(AddNeta.this, "Error is there!", Toast.LENGTH_LONG).show();
 
-                }
-            });
 
-            progressDialog = new ProgressDialog(AddNeta.this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setTitle("Loading !");
-            progressDialog.setMessage("Sending data to server");
-            progressDialog.show();
-            RequestQueue requestQueue = Volley.newRequestQueue(AddNeta.this);
-            requestQueue.add(jsonObjectRequest);
+
 
 
         } else if (view.getId() == R.id.iv_userImage) {
@@ -154,6 +142,59 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+
+
+    public void uploadData(String url_of_image) {
+        String name = et_name.getText().toString();
+        String party = et_party.getText().toString();
+        String city = et_city.getText().toString();
+
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("Name", name);
+            jsonObject.put("City", city);
+            jsonObject.put("Party", party);
+            jsonObject.put("ImageUrl", url_of_image);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String url = "https://api.backendless.com/65C6BAD1-C8A1-91BF-FFDF-0803DE39EE00/0B0003D1-E1FB-A85B-FFC9-634D746D3100/data/MLAs";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Response", response.toString());
+                progressDialog.dismiss();
+                Toast.makeText(AddNeta.this, "Data Saved", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent();
+                intent.putExtra("Name", et_name.getText().toString());
+                setResult(RESULT_OK, intent);
+                AddNeta.this.finish();
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error", "Err" + error.getLocalizedMessage());
+                progressDialog.dismiss();
+                Toast.makeText(AddNeta.this, "Error is there!", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        progressDialog = new ProgressDialog(AddNeta.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("Loading !");
+        progressDialog.setMessage("Sending data to server");
+        progressDialog.show();
+        RequestQueue requestQueue = Volley.newRequestQueue(AddNeta.this);
+        requestQueue.add(jsonObjectRequest);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -164,6 +205,7 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
                     try {
                         InputStream imageStream = getContentResolver().openInputStream(selectedImage);
                         Bitmap selectedImageBitmap = BitmapFactory.decodeStream(imageStream);
+                        imageNeta = selectedImageBitmap;
                         ib_userImage.setImageBitmap(selectedImageBitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -178,6 +220,7 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
 
 
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                imageNeta = bitmap;
                 ib_userImage.setImageBitmap(bitmap);
 //                ByteArrayOutputStream baos = new ByteArrayOutputStream();
 //                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
