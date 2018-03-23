@@ -59,14 +59,24 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
             int mMonth = calendar.get(Calendar.MONTH);
             int mDay  = calendar.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(GridViewActivity.this,GridViewActivity.this,mYear,mMonth,mDay);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    GridViewActivity.this,
+                    GridViewActivity.this,
+                    mYear,
+                    mMonth,
+                    mDay);
             datePickerDialog.show();
         } else if (item.getItemId() == R.id.delete) {
             Calendar calendar = Calendar.getInstance();
             int mHour = calendar.get(Calendar.HOUR_OF_DAY);
             int mMinutes = calendar.get(Calendar.MINUTE);
 
-            TimePickerDialog timePickerDialog = new TimePickerDialog(GridViewActivity.this,GridViewActivity.this,mHour,mMinutes,false);
+            TimePickerDialog timePickerDialog = new TimePickerDialog(
+                    GridViewActivity.this,
+                    GridViewActivity.this,
+                    mHour,
+                    mMinutes,
+                    false);
             timePickerDialog.show();
         }
         return true;
@@ -225,6 +235,9 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
         if (i<12) {
             time = ""+i;
             am_pm = "AM";
+        } else if (i == 12) {
+            time = ""+i;
+            am_pm = "PM";
         } else {
             time = ""+(i-12);
             am_pm = "PM";

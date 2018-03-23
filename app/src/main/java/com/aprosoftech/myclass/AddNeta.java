@@ -136,14 +136,7 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                    fileUri = getOutputMediaFileUri(1);
-
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-
-                    // start the image capture Intent
                     startActivityForResult(intent, 1001);
-
                 }
             });
             alertBuilder.setNeutralButton("Gallery", new DialogInterface.OnClickListener() {
@@ -183,17 +176,13 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
         } else if (requestCode == 1001) {
             if (resultCode == RESULT_OK) {
 
-                // bimatp factory
-                BitmapFactory.Options options = new BitmapFactory.Options();
 
-                // downsizing image as it throws OutOfMemory Exception for larger
-                // images
-                options.inSampleSize = 8;
-
-                final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-                        options);
-
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 ib_userImage.setImageBitmap(bitmap);
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//                byte[] showimage1 = baos.toByteArray();
+//                sellerimagestring = Base64.encodeToString(showimage1, Base64.DEFAULT);
                 }
         }
     }
