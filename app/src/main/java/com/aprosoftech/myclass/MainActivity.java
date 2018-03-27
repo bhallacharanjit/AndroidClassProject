@@ -1,5 +1,6 @@
 package com.aprosoftech.myclass;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -181,8 +182,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Button btn = (Button) view;
         if (btn.getId() == R.id.btn_1) {
-            int selected_position = sp_names.getSelectedItemPosition();
-            Toast.makeText(MainActivity.this,names[selected_position],Toast.LENGTH_LONG).show();
+//            int selected_position = sp_names.getSelectedItemPosition();
+//            Toast.makeText(MainActivity.this,names[selected_position],Toast.LENGTH_LONG).show();
+
+            SharedPreferences sharedPreferences =
+                    MainActivity.this.getSharedPreferences
+                            ("CLASSPREF",MODE_PRIVATE);
+            SharedPreferences.Editor editor= sharedPreferences.edit();
+
+            editor.remove("USER");
+            editor.apply();
+
+            MainActivity.this.finish();
+
+
+
+
         }
     }
 
