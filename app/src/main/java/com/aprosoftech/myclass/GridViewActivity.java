@@ -65,6 +65,7 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
                     mYear,
                     mMonth,
                     mDay);
+            datePickerDialog.getDatePicker().setTag(100);
             datePickerDialog.show();
         } else if (item.getItemId() == R.id.delete) {
             Calendar calendar = Calendar.getInstance();
@@ -220,7 +221,16 @@ public class GridViewActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        Toast.makeText(this, i2+"-"+(i1+1)+"-"+i, Toast.LENGTH_SHORT).show();
+        int mytag = (int) datePicker.getTag();
+
+        if (mytag == 100) {
+            Toast.makeText(this, i2+"-"+(i1+1)+"-"+i, Toast.LENGTH_SHORT).show();
+        } else if (mytag == 102) {
+            Log.d("DATE",i2+"-"+(i1+1)+"-"+i);
+        }
+
+
+
 
 
 
