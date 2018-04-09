@@ -18,16 +18,45 @@ import org.json.JSONObject;
 public class NetaAdapter extends BaseAdapter {
 
     Context context;
-    JSONArray netaArray;
+    JSONArray netaArray,netaCompleteArray;
     LayoutInflater layoutInflater = null;
 
     public NetaAdapter(Context context , JSONArray jsonArray) {
         this.context = context;
-        this.netaArray = jsonArray;
+        this.netaArray = this.netaCompleteArray = jsonArray;
 
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
+    }
+
+
+    public void filterData(String filterString) {
+        if (filterString.length() == 0) {
+            this.netaArray = this.netaCompleteArray;
+            this.notifyDataSetChanged();
+            return;
+        }
+
+        this.netaArray = new JSONArray();
+
+       for (int i=0;i<this.netaCompleteArray.length();i++) {
+           try {
+               JSONObject jsonObject = this.netaCompleteArray.getJSONObject(i);
+               String netaName = jsonObject.getString("Name");
+
+               if (netaName.toLowerCase().contains(filterString.toLowerCase()))
+               {
+                   this.netaArray.put(jsonObject);
+               }
+           } catch (JSONException e) {
+               e.printStackTrace();
+           }
+
+
+       }
+
+       this.notifyDataSetChanged();
     }
 
 

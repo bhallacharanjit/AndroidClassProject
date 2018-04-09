@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +33,8 @@ public class ShowNeta extends AppCompatActivity implements AdapterView.OnItemCli
     ListView lv_Netas;
     JSONArray jsonArray;
     Button btn_val;
+    EditText et_search;
+    NetaAdapter netaAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,30 @@ public class ShowNeta extends AppCompatActivity implements AdapterView.OnItemCli
 
 
         lv_Netas = (ListView) findViewById(R.id.lv_netas);
+        et_search = (EditText) findViewById(R.id.et_search);
         btn_val = (Button) findViewById(R.id.btn_val);
         btn_val.setOnClickListener(this);
+
+
+
+        et_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String myText = charSequence.toString();
+                netaAdapter.filterData(myText);
+                Toast.makeText(ShowNeta.this,""+myText,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
     }
 
@@ -75,7 +102,7 @@ public class ShowNeta extends AppCompatActivity implements AdapterView.OnItemCli
 //
 
 
-                    NetaAdapter netaAdapter = new NetaAdapter(ShowNeta.this, jsonArray);
+                    netaAdapter = new NetaAdapter(ShowNeta.this, jsonArray);
                     lv_Netas.setAdapter(netaAdapter);
 
 

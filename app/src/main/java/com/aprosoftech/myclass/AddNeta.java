@@ -1,5 +1,6 @@
 package com.aprosoftech.myclass;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -25,10 +26,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.backendless.Backendless;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
-import com.backendless.files.BackendlessFile;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class AddNeta extends AppCompatActivity implements View.OnClickListener {
+public class AddNeta extends AppCompatActivity implements View.OnClickListener,PaymentResultListener {
 
 
     EditText et_name, et_party, et_city;
@@ -84,31 +83,65 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save) {
 
-            if (imageNeta == null) {
-                uploadData("");
-            } else {
-                String fileName = et_name.getText().toString() + "_"+et_city.getText().toString()
-                        +"_"+et_party.getText().toString();
-                Backendless.Files.Android.upload( imageNeta,
-                        Bitmap.CompressFormat.PNG,
-                        100,fileName,
-                        "myClassFiles",
-                        new AsyncCallback<BackendlessFile>()
-                {
-                    @Override
-                    public void handleResponse( final BackendlessFile backendlessFile)
-                    {
-                        uploadData(backendlessFile.getFileURL());
-                    }
-                    @Override
-                    public void handleFault( BackendlessFault backendlessFault )
-                    {
-                        Toast.makeText( AddNeta.this, backendlessFault.toString(), Toast.LENGTH_SHORT ).show();
-                    }
-                });
+//            if (imageNeta == null) {
+//                uploadData("");
+//            } else {
+//                String fileName = et_name.getText().toString() + "_"+et_city.getText().toString()
+//                        +"_"+et_party.getText().toString();
+//                Backendless.Files.Android.upload( imageNeta,
+//                        Bitmap.CompressFormat.PNG,
+//                        100,fileName,
+//                        "myClassFiles",
+//                        new AsyncCallback<BackendlessFile>()
+//                {
+//                    @Override
+//                    public void handleResponse( final BackendlessFile backendlessFile)
+//                    {
+//                        uploadData(backendlessFile.getFileURL());
+//                    }
+//                    @Override
+//                    public void handleFault( BackendlessFault backendlessFault )
+//                    {
+//                        Toast.makeText( AddNeta.this, backendlessFault.toString(), Toast.LENGTH_SHORT ).show();
+//                    }
+//                });
+//            }
+
+
+
+            //PAYMENT
+            Checkout checkout = new Checkout();
+            checkout.setImage(R.mipmap.add_neta);
+            final Activity activity = this;
+            try {
+                JSONObject options = new JSONObject();
+
+                /**
+                 * Merchant Name
+                 * eg: Rentomojo || HasGeek etc.
+                 */
+                options.put("name", "Aprosoft");
+
+                /**
+                 * Description can be anything
+                 * eg: Order #123123
+                 *     Invoice Payment
+                 *     etc.
+                 */
+                options.put("description", "Order #123456");
+
+                options.put("currency", "INR");
+
+                /**
+                 * Amount is always passed in PAISE
+                 * Eg: "500" = Rs 5.00
+                 */
+                options.put("amount", "15000");
+
+                checkout.open(activity, options);
+            } catch(Exception e) {
+                Log.e("test", "Error in starting Razorpay Checkout", e);
             }
-
-
 
 
 
@@ -270,5 +303,17 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener {
         }
 
         return mediaFile;
+    }
+
+
+    //PAYMENT RESULT LISTNER METHODS
+    @Override
+    public void onPaymentSuccess(String s) {
+        Toast.makeText(AddNeta.this,"Success "+s,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        Toast.makeText(AddNeta.this,"Error Code "+i+"\nMessage "+s,Toast.LENGTH_LONG).show();
     }
 }

@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.aprosoftech.myclass.ShowNeta">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+        android:id="@+id/et_search"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
+        android:layout_below="@id/et_search"
         android:id="@+id/lv_netas"/>
 
 

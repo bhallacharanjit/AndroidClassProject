@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.backendless.Backendless;
 import com.onesignal.OneSignal;
+import com.razorpay.Checkout;
 
 /**
  * Created by CSB on 20/03/18.
@@ -23,6 +24,8 @@ public class ClassApplication extends Application {
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
                 .init();
+
+        Checkout.preload(getApplicationContext());
 
 
         Backendless.initApp(this,APPLICATION_ID,API_KEY);
