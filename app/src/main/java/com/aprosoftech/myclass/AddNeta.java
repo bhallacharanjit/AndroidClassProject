@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.onesignal.OneSignal;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -144,6 +145,23 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener,P
             }
 
 
+            try {
+                JSONObject jsonObject = new JSONObject("{'contents': {'en':'Test Message'}, 'include_player_ids': ['" + "All" + "']}");
+                OneSignal.postNotification(jsonObject,
+                        new OneSignal.PostNotificationResponseHandler() {
+                            @Override
+                            public void onSuccess(JSONObject response) {
+                                Log.i("OneSignalExample", "postNotification Success: " + response.toString());
+                            }
+
+                            @Override
+                            public void onFailure(JSONObject response) {
+                                Log.e("OneSignalExample", "postNotification Failure: " + response.toString());
+                            }
+                        });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
 
