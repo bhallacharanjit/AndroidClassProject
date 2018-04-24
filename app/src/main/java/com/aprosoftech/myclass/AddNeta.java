@@ -44,7 +44,7 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener,P
 
 
     EditText et_name, et_party, et_city;
-    Button btn_save;
+    Button btn_save,btn_save_local;
     ImageButton ib_userImage;
     Uri fileUri;
     ProgressDialog progressDialog;
@@ -67,10 +67,11 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener,P
         et_party = (EditText) findViewById(R.id.et_party);
 
         btn_save = (Button) findViewById(R.id.btn_save);
+        btn_save_local = (Button) findViewById(R.id.btn_save_local);
         ib_userImage = (ImageButton) findViewById(R.id.iv_userImage);
         ib_userImage.setOnClickListener(this);
         btn_save.setOnClickListener(this);
-
+        btn_save_local.setOnClickListener(this);
     }
 
     @Override
@@ -82,6 +83,18 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener,P
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.btn_save_local) {
+            DBHelper dbHelper = new DBHelper(AddNeta.this);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("name",et_name.getText().toString());
+                jsonObject.put("city",et_city.getText().toString());
+                jsonObject.put("party",et_party.getText().toString());
+                dbHelper.insertData(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         if (view.getId() == R.id.btn_save) {
 
 //            if (imageNeta == null) {

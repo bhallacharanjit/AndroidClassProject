@@ -55,6 +55,17 @@
             android:textAllCaps="false"
             android:text="Save Politician"/>
 
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Locally"
+            android:layout_marginTop="5dp"
+            android:textColor="#FFF"
+            android:id="@+id/btn_save_local"
+            android:background="#FF0000"
+            android:layout_below="@id/btn_save"/>
+
     </RelativeLayout>
 
 </RelativeLayout>
