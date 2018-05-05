@@ -1,7 +1,9 @@
 package com.aprosoftech.myclass;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -84,16 +87,42 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener,P
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_save_local) {
-            DBHelper dbHelper = new DBHelper(AddNeta.this);
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("name",et_name.getText().toString());
-                jsonObject.put("city",et_city.getText().toString());
-                jsonObject.put("party",et_party.getText().toString());
-                dbHelper.insertData(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+//            DBHelper dbHelper = new DBHelper(AddNeta.this);
+//            JSONObject jsonObject = new JSONObject();
+//            try {
+//                jsonObject.put("name",et_name.getText().toString());
+//                jsonObject.put("city",et_city.getText().toString());
+//                jsonObject.put("party",et_party.getText().toString());
+//                dbHelper.insertData(jsonObject);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+
+//            Intent intent = new Intent(AddNeta.this,ShowNeta.class);
+//            PendingIntent pendingIntent1 = PendingIntent.getActivity(AddNeta.this,(int)System.currentTimeMillis(),intent,0);
+//
+//            Notification notification = new Notification.Builder(AddNeta.this)
+//                    .setContentTitle("Neta has been added")
+//                    .setContentText("Some text here as well")
+//                    .setSmallIcon(R.mipmap.add_neta)
+//                    .setAutoCancel(true).build();
+//
+//            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+//
+//            notificationManager.notify(1001,notification);
+
+
+            Intent intent1 = new Intent(AddNeta.this, MyBroadcast.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(AddNeta.this,
+                    1000, intent1,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager =(AlarmManager) getSystemService(ALARM_SERVICE);
+            Calendar calendar = Calendar.getInstance();
+            long milliseconds = calendar.getTimeInMillis();
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,milliseconds,AlarmManager.INTERVAL_DAY,pendingIntent);
+
+
+
         }
         if (view.getId() == R.id.btn_save) {
 
@@ -159,7 +188,7 @@ public class AddNeta extends AppCompatActivity implements View.OnClickListener,P
 
 
             try {
-                JSONObject jsonObject = new JSONObject("{'contents': {'en':'Test Message'}, 'include_player_ids': ['" + "All" + "']}");
+                JSONObject jsonObject = new JSONObject("{\"contents\": {\"en\":\"Test Message\"}, \"included_segments\": [\"" + "All" + "\"]}");
                 OneSignal.postNotification(jsonObject,
                         new OneSignal.PostNotificationResponseHandler() {
                             @Override
